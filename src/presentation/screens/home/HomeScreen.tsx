@@ -1,13 +1,17 @@
 import {FlatList, StyleSheet, View} from 'react-native';
-import { Text} from 'react-native-paper';
+import {FAB, Text, useTheme} from 'react-native-paper';
 import {getPokemons} from '../../../actions/pokemons';
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import {useInfiniteQuery, useQueryClient} from '@tanstack/react-query';
 import {PokeballBg} from '../../components/ui/PokeballBg';
 import {globalTheme} from '../../../config/theme/global-theme';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {PokemonCard} from '../../components/pokemons/PokemonCard';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParams } from '../../navigator/StackNavigator';
 
-export const HomeScreen = () => {
+interface Props extends StackScreenProps<RootStackParams, 'HomeScreen'> {}
+
+export const HomeScreen = ({navigation}:Props) => {
   // ? esta es la forma tradicional de una peticion http
   // const {isLoading, data: pokemons = []} = useQuery({
   //   queryKey: ['pokemons'],
@@ -15,6 +19,7 @@ export const HomeScreen = () => {
   //   staleTime: 1000 * 60 * 60, // 1 hour
   // });
 
+  const theme = useTheme();
   const queryClient = useQueryClient();
 
   const {isLoading, data, fetchNextPage} = useInfiniteQuery({
@@ -47,6 +52,13 @@ export const HomeScreen = () => {
         onEndReached={() => fetchNextPage()}
         onEndReachedThreshold={0.6}
         showsVerticalScrollIndicator={false}
+      />
+      <FAB
+        label="buscar"
+        onPress={() => navigation.push('SearchScreen')}
+        style={[globalTheme.fab, {backgroundColor: theme.colors.primary}]}
+        mode="elevated"
+        color={theme.dark ? 'black' : 'white'}
       />
     </View>
   );

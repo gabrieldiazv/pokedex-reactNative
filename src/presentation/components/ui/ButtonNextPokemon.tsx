@@ -12,7 +12,9 @@ export const ButtonNextPokemon = ({idPokemon}: Props) => {
   const {isDark} = useContext(ThemeContext);
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
   // console.log('isDark', isDark);
-  const pokeballImg = require('../../../assets/pokeball-light.png');
+  const pokeballImg = isDark
+    ? require('../../../assets/pokeball-dark.png')
+    : require('../../../assets/pokeball-light.png');
 
   const colorText = isDark ? 'white' : 'black';
   const irAlSiguientePokemon = () => {
